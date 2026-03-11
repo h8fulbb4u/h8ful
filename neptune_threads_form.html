@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neptune Logistics</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a0f1e;
+    --deep: #0d1530;
+    --accent: #00c6ff;
+    --accent2: #0072ff;
+    --gold: #f5c842;
+    --white: #f0f4ff;
+    --glass: rgba(255,255,255,0.04);
+    --border: rgba(0,198,255,0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--navy);
+    min-height: 100vh;
+    font-family: 'Golos Text', sans-serif;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(0,114,255,0.18) 0%, transparent 70%);
+    pointer-events: none;
+    animation: pulse 8s ease-in-out infinite;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -150px; right: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,198,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    animation: pulse 10s ease-in-out infinite reverse;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+  .lang-switcher {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+  .lang-btn {
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 5px 13px;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(240,244,255,0.4);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active {
+    background: rgba(0,198,255,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .lang-btn:hover:not(.active) {
+    border-color: rgba(255,255,255,0.2);
+    color: rgba(240,244,255,0.7);
+  }
+  .card {
+    background: var(--deep);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 48px 40px;
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,198,255,0.08);
+    animation: fadeUp 0.7s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent), var(--gold));
+  }
+  .whale-bg {
+    position: absolute;
+    right: -20px; top: 20px;
+    font-size: 120px;
+    opacity: 0.04;
+    line-height: 1;
+    user-select: none;
+    animation: floatWhale 6s ease-in-out infinite;
+  }
+  @keyframes floatWhale {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-12px) rotate(0deg); }
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(245,200,66,0.12);
+    border: 1px solid rgba(245,200,66,0.3);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .badge::before { content: '🔥'; font-size: 12px; }
+  h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 30%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: rgba(240,244,255,0.55);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .subtitle strong { color: var(--accent); }
+  .perks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .perk {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(240,244,255,0.7);
+  }
+  .perk-icon {
+    width: 28px; height: 28px;
+    background: rgba(0,198,255,0.1);
+    border: 1px solid rgba(0,198,255,0.2);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 24px 0;
+  }
+  .form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(240,244,255,0.4);
+    margin-bottom: 6px;
+  }
+  .form-group { margin-bottom: 14px; }
+  input:not([type=checkbox]), select {
+    width: 100%;
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 14px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  input:not([type=checkbox])::placeholder { color: rgba(240,244,255,0.25); }
+  input:not([type=checkbox]):focus, select:focus {
+    border-color: var(--accent);
+    background: rgba(0,198,255,0.05);
+    box-shadow: 0 0 0 3px rgba(0,198,255,0.1);
+  }
+  select option { background: #0d1530; color: #fff; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    box-shadow: 0 8px 30px rgba(0,114,255,0.4);
+    letter-spacing: 0.03em;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,198,255,0.5); }
+  .btn:active { transform: translateY(0); opacity: 0.9; }
+  .note {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(240,244,255,0.25);
+    margin-top: 14px;
+    line-height: 1.6;
+  }
+  .threads-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    color: rgba(240,244,255,0.4);
+  }
+  .threads-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: blink 2s ease infinite;
+    flex-shrink: 0;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .success {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+    animation: fadeUp 0.5s ease both;
+  }
+  .success-icon {
+    font-size: 52px;
+    margin-bottom: 16px;
+    display: block;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes popIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+  .success h2 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 20px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #fff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .success p {
+    font-size: 13px;
+    color: rgba(240,244,255,0.5);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="whale-bg">🐋</div>
+
+  <div id="formContent">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('zh')">中文</button>
+    </div>
+
+    <div class="badge" id="badge">Спецпредложение — ограничено</div>
+    <h1 id="title">Доставка из Китая<br>без лишних хлопот</h1>
+    <p class="subtitle" id="subtitle">
+      Грузы любого объёма — от маленькой партии до полного контейнера.<br>
+      <strong id="subtitleStrong">Оставь заявку сейчас — получи скидку на первую отправку.</strong>
+    </p>
+
+    <div class="perks">
+      <div class="perk"><div class="perk-icon">🚢</div><span id="perk1">Морем, авиа, авто, поездом — выбираем оптимальный маршрут</span></div>
+      <div class="perk"><div class="perk-icon">📦</div><span id="perk2">Работаем с малым бизнесом, оптовиками и частниками</span></div>
+      <div class="perk"><div class="perk-icon">⚡</div><span id="perk3">Ответим в течение 2 часов и рассчитаем стоимость</span></div>
+    </div>
+
+    <div class="threads-hint">
+      <div class="threads-dot"></div>
+      <span id="hint">Заполни форму — мы свяжемся лично в Telegram или WhatsApp</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="form-group">
+      <label class="form-label" id="labelName">Как тебя зовут?</label>
+      <input type="text" id="name" placeholder="Имя или название компании" />
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="labelCargo">Тип груза / что везём?</label>
+      <input type="text" id="cargo" placeholder="Электроника, одежда, оборудование..." />
+    </div>
+    <div class="row">
+      <div class="form-group">
+        <label class="form-label" id="labelVolume">Объём (кг / м³)</label>
+        <input type="text" id="volume" placeholder="Примерно" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="labelType">Кто вы?</label>
+        <select id="type">
+          <option value="" disabled selected id="optDefault">Выбрать</option>
+          <option id="opt1">Малый бизнес</option>
+          <option id="opt2">Средний / крупный бизнес</option>
+          <option id="opt3">Частное лицо</option>
+          <option id="opt4">Перекупщик / посредник</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="labelContact">Telegram или WhatsApp</label>
+      <input type="text" id="contact" placeholder="@username или +7..." />
+    </div>
+
+    <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;">
+      <input type="checkbox" id="consent" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--accent);cursor:pointer;-webkit-appearance:checkbox;appearance:checkbox;background:none;border:none;padding:0;">
+      <label for="consent" id="labelConsent" style="font-size:11px;color:rgba(240,244,255,0.4);line-height:1.5;cursor:pointer;">Нажимая кнопку, я соглашаюсь на обработку персональных данных для связи по моему запросу</label>
+    </div>
+    <button class="btn" id="btnSubmit" onclick="handleSubmit()">🐋 Получить спецпредложение →</button>
+    <p class="note" id="noteText">Данные не передаются третьим лицам.<br>Отвечаем быстро — обычно в течение пары часов.</p>
+  </div>
+
+  <div class="success" id="successMsg">
+    <span class="success-icon">🐋</span>
+    <h2 id="successTitle">Заявка принята!</h2>
+    <p id="successText">Мы уже видим твою заявку и свяжемся<br>в ближайшее время в Telegram или WhatsApp.<br><br>
+    <strong style="color: var(--accent);" id="successDiscount">Скидка зафиксирована за тобой.</strong></p>
+  </div>
+</div>
+
+<script>
+const TG_TOKEN = '8654699985:AAGGYEtw7xCAbfRMLX-YDsIbkrTvPNU5eFM';
+const TG_CHAT  = '6722604773';
+
+const translations = {
+  ru: {
+    badge: 'Спецпредложение — ограничено',
+    title: 'Доставка из Китая<br>без лишних хлопот',
+    subtitle: 'Грузы любого объёма — от маленькой партии до полного контейнера.',
+    subtitleStrong: 'Оставь заявку сейчас — получи скидку на первую отправку.',
+    perk1: 'Морем, авиа, авто, поездом — выбираем оптимальный маршрут',
+    perk2: 'Работаем с малым бизнесом, оптовиками и частниками',
+    perk3: 'Ответим в течение 2 часов и рассчитаем стоимость',
+    hint: 'Заполни форму — мы свяжемся лично в Telegram или WhatsApp',
+    labelName: 'Как тебя зовут?',
+    placeholderName: 'Имя или название компании',
+    labelCargo: 'Тип груза / что везём?',
+    placeholderCargo: 'Электроника, одежда, оборудование...',
+    labelVolume: 'Объём (кг / м³)',
+    placeholderVolume: 'Примерно',
+    labelType: 'Кто вы?',
+    optDefault: 'Выбрать',
+    opt1: 'Малый бизнес',
+    opt2: 'Средний / крупный бизнес',
+    opt3: 'Частное лицо',
+    opt4: 'Перекупщик / посредник',
+    labelContact: 'Telegram или WhatsApp',
+    placeholderContact: '@username или +7...',
+    btnSubmit: '🐋 Получить спецпредложение →',
+    btnSending: 'Отправляем...',
+    consentText: 'Нажимая кнопку, я соглашаюсь на обработку персональных данных для связи по моему запросу',
+    consentError: 'Пожалуйста, дайте согласие на обработку данных',
+    noteText: 'Данные не передаются третьим лицам.<br>Отвечаем быстро — обычно в течение пары часов.',
+    successTitle: 'Заявка принята!',
+    successText: 'Мы уже видим твою заявку и свяжемся<br>в ближайшее время в Telegram или WhatsApp.',
+    successDiscount: 'Скидка зафиксирована за тобой.',
+  },
+  en: {
+    badge: 'Special offer — limited',
+    title: 'Shipping from China<br>made simple',
+    subtitle: 'Any cargo size — from a small batch to a full container.',
+    subtitleStrong: 'Submit your request now — get a discount on your first shipment.',
+    perk1: 'Sea, air, road, rail — we pick the best route for you',
+    perk2: 'We work with small businesses, wholesalers and individuals',
+    perk3: 'We reply within 2 hours and calculate your cost',
+    hint: 'Fill out the form — we will contact you via Telegram or WhatsApp',
+    labelName: 'Your name?',
+    placeholderName: 'Name or company name',
+    labelCargo: 'Cargo type / what are we shipping?',
+    placeholderCargo: 'Electronics, clothing, equipment...',
+    labelVolume: 'Volume (kg / m³)',
+    placeholderVolume: 'Approximate',
+    labelType: 'Who are you?',
+    optDefault: 'Select',
+    opt1: 'Small business',
+    opt2: 'Medium / large business',
+    opt3: 'Private individual',
+    opt4: 'Reseller / intermediary',
+    labelContact: 'Telegram or WhatsApp',
+    placeholderContact: '@username or +...',
+    btnSubmit: '🐋 Get special offer →',
+    btnSending: 'Sending...',
+    consentText: 'By clicking the button, I agree to the processing of my personal data for contact purposes',
+    consentError: 'Please agree to the data processing policy',
+    noteText: 'Your data is never shared with third parties.<br>We respond quickly — usually within a couple of hours.',
+    successTitle: 'Request received!',
+    successText: 'We have your request and will get in touch<br>via Telegram or WhatsApp shortly.',
+    successDiscount: 'Your discount is reserved.',
+  },
+  zh: {
+    badge: '限时特惠',
+    title: '从中国发货<br>轻松无忧',
+    subtitle: '任意货物规模——从小批量到整柜皆可。',
+    subtitleStrong: '立即提交申请，享受首次运输折扣优惠。',
+    perk1: '海运、空运、陆运、铁路——为您选择最优路线',
+    perk2: '服务小型企业、批发商及个人客户',
+    perk3: '2小时内回复并为您计算费用',
+    hint: '填写表格——我们将通过 Telegram 或 WhatsApp 联系您',
+    labelName: '您的姓名？',
+    placeholderName: '姓名或公司名称',
+    labelCargo: '货物类型 / 运什么？',
+    placeholderCargo: '电子产品、服装、设备...',
+    labelVolume: '体积（千克 / 立方米）',
+    placeholderVolume: '大约',
+    labelType: '您的身份？',
+    optDefault: '请选择',
+    opt1: '小型企业',
+    opt2: '中型 / 大型企业',
+    opt3: '个人',
+    opt4: '经销商 / 中间商',
+    labelContact: 'Telegram 或 WhatsApp',
+    placeholderContact: '@用户名 或 +...',
+    btnSubmit: '🐋 获取优惠方案 →',
+    btnSending: '发送中...',
+    consentText: '点击按钮即表示我同意处理我的个人数据以便联系',
+    consentError: '请同意数据处理条款',
+    noteText: '您的信息不会透露给第三方。<br>我们回复迅速——通常在几小时内。',
+    successTitle: '申请已收到！',
+    successText: '我们已看到您的申请，<br>将尽快通过 Telegram 或 WhatsApp 与您联系。',
+    successDiscount: '您的折扣已为您保留。',
+  }
+};
+
+let currentLang = 'ru';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = translations[lang];
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+
+  document.getElementById('badge').childNodes[document.getElementById('badge').childNodes.length - 1].textContent = ' ' + t.badge;
+  document.getElementById('title').innerHTML = t.title;
+  document.getElementById('subtitle').childNodes[0].textContent = t.subtitle + ' ';
+  document.getElementById('subtitleStrong').textContent = t.subtitleStrong;
+  document.getElementById('perk1').textContent = t.perk1;
+  document.getElementById('perk2').textContent = t.perk2;
+  document.getElementById('perk3').textContent = t.perk3;
+  document.getElementById('hint').textContent = t.hint;
+  document.getElementById('labelName').textContent = t.labelName;
+  document.getElementById('name').placeholder = t.placeholderName;
+  document.getElementById('labelCargo').textContent = t.labelCargo;
+  document.getElementById('cargo').placeholder = t.placeholderCargo;
+  document.getElementById('labelVolume').textContent = t.labelVolume;
+  document.getElementById('volume').placeholder = t.placeholderVolume;
+  document.getElementById('labelType').textContent = t.labelType;
+  document.getElementById('optDefault').textContent = t.optDefault;
+  document.getElementById('opt1').textContent = t.opt1;
+  document.getElementById('opt2').textContent = t.opt2;
+  document.getElementById('opt3').textContent = t.opt3;
+  document.getElementById('opt4').textContent = t.opt4;
+  document.getElementById('labelContact').textContent = t.labelContact;
+  document.getElementById('contact').placeholder = t.placeholderContact;
+  document.getElementById('btnSubmit').textContent = t.btnSubmit;
+  document.getElementById('noteText').innerHTML = t.noteText;
+  document.getElementById('labelConsent').textContent = t.consentText;
+  document.getElementById('successTitle').textContent = t.successTitle;
+  document.getElementById('successText').innerHTML = t.successText;
+  document.getElementById('successDiscount').textContent = t.successDiscount;
+}
+
+async function handleSubmit() {
+  const name    = document.getElementById('name').value.trim();
+  const cargo   = document.getElementById('cargo').value.trim();
+  const volume  = document.getElementById('volume').value.trim();
+  const type    = document.getElementById('type').value;
+  const contact = document.getElementById('contact').value.trim();
+
+  const consent = document.getElementById('consent');
+  if (!consent.checked) {
+    consent.style.outline = '2px solid #ff4d6d';
+    setTimeout(() => { consent.style.outline = ''; }, 2000);
+    return;
+  }
+
+  if (!name || !contact) {
+    const missing = !name ? 'name' : 'contact';
+    const el = document.getElementById(missing);
+    el.style.borderColor = '#ff4d6d';
+    el.style.boxShadow = '0 0 0 3px rgba(255,77,109,0.15)';
+    el.focus();
+    setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 2000);
+    return;
+  }
+
+  const btn = document.getElementById('btnSubmit');
+  btn.textContent = translations[currentLang].btnSending;
+  btn.disabled = true;
+
+  const langLabel = { ru: '🇷🇺 RU', en: '🇬🇧 EN', zh: '🇨🇳 ZH' }[currentLang];
+  const text = '🐋 *Новая заявка — Neptune Logistics*\n' +
+    langLabel + '\n\n' +
+    '👤 *Имя / Компания:* ' + name + '\n' +
+    '📦 *Груз:* ' + (cargo || '—') + '\n' +
+    '⚖️ *Объём:* ' + (volume || '—') + '\n' +
+    '🏷 *Тип клиента:* ' + (type || '—') + '\n' +
+    '📲 *Контакт:* ' + contact;
+
+  try {
+    await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TG_CHAT, text: text, parse_mode: 'Markdown' })
+    });
+  } catch(e) {}
+
+  document.getElementById('formContent').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+}
+</script>
+</body>
+</html>
